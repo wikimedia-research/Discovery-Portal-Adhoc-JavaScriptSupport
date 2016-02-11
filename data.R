@@ -19,7 +19,7 @@ query_hive <- function(query){
   return(list(data = results, elapsed = system_time['elapsed']))
 }
 
-results <- lapply(1:9, function(day) {
+results <- lapply(4:10, function(day) {
   cat("Fetching data for", day, "Feb 2016.\n")
   query <- paste0("ADD JAR /home/ebernhardson/refinery-hive-0.0.21-SNAPSHOT.jar;
                    CREATE TEMPORARY FUNCTION is_spider as 'org.wikimedia.analytics.refinery.hive.IsSpiderUDF';
@@ -65,7 +65,7 @@ aggregates <- results %>%
   tidyr::spread(file, requests, fill = 0)
 
 # Tidying up...
-aggregates <- aggregates[, c(1:4, 8:9)]
-aggregates <- aggregates[1:(nrow(aggregates) - 3), ]
+# aggregates <- aggregates[, c(1:4, 8:9)]
+# aggregates <- aggregates[1:(nrow(aggregates) - 3), ]
 
 readr::write_csv(aggregates, "portal-js.csv")
